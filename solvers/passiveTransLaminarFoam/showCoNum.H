@@ -1,4 +1,4 @@
-
+scalar velMag = 0;
 if (mesh.nInternalFaces())
 {
     surfaceScalarField SfUfbyDelta = 

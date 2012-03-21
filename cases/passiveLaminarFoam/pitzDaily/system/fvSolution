@@ -34,13 +34,16 @@ solvers
 SIMPLE
 {
     nNonOrthogonalCorrectors 0;
-    convergence 1e-2;
-    //tSchmidt 1;
-}
+
+    residualControl
+    {
+        C               1e-6;
+    }
+
 
 relaxationFactors
 {
-   C		0.9;
+
 }
 
 // ************************************************************************* //

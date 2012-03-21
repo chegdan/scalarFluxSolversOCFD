@@ -17,7 +17,7 @@ FoamFile
 ddtSchemes
 {
 //   default banana;
-    default steadyState;
+    default CrankNicholson 1;
 //    default backward;
 //    default boundedBackward 0 1;
 //default CrankNicholson 1;//0.5;

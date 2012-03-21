@@ -47,37 +47,28 @@ int main(int argc, char *argv[])
 #   include "setInitialDeltaT.H"//added--only need to set timestep once
 #   include "showCoNum.H"//output the Courant number after timestep change
 
-#   include "readSIMPLEControls.H"//added--reads in tSchmidt to see if turbulent schmidt relation should be used
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nCalculating scalar transport\n" << endl;
 
-    for (runTime++; !runTime.end(); runTime++)
+    while (runTime.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-#       include "readSIMPLEControls.H"
-
-        for (int nonOrth=0; nonOrth<=nNonOrthCorr; nonOrth++)
-        {
-
-	fvScalarMatrix CEqn
+	tmp<fvScalarMatrix> CEqn
 	(
-	   fvm::ddt( C)
+	   fvm::ddt(C)
 	 + fvm::div(phi, C)
 	 + fvm::SuSp(-fvc::div(phi), C)//added for boundedness from post (http://www.cfd-online.com/Forums/openfoam/64602-origin-fvm-sp-fvc-div-phi_-epsilon_-kepsilon-eqn.html)
 	 - fvm::laplacian(D, C)
 
 	);
-
 	
-	solve(CEqn);
-
-        }
+	solve(CEqn());
 
         runTime.write();
+
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
             << nl << endl;

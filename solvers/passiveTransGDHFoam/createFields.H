@@ -86,3 +86,10 @@
     );
 
 #   include "createPhi.H"
+
+    singlePhaseTransportModel laminarTransport(U, phi);
+
+    autoPtr<incompressible::RASModel> turbulence
+    (
+        incompressible::RASModel::New(U, phi, laminarTransport)
+    );

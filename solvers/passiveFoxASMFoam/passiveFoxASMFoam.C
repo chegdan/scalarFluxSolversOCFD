@@ -31,64 +31,37 @@ Description
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
+#include "singlePhaseTransportModel.H"
+#include "RASModel.H"
+#include "simpleControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
-
 #   include "setRootCase.H"
   
 #   include "createTime.H"
 #   include "createMesh.H"
 #   include "createFields.H"
-/*#   include "readTimeControls.H"//added
-#   include "CourantNo.H"//added
 
-//Info<<"Setting initial delta time"<<endl;
-#   include "setInitialDeltaT.H"//added--only need to set timestep once
-#   include "showCoNum.H"//output the Courant number after timestep change
-*/
-#   include "readSIMPLEControls.H"//added--reads in tSchmidt to see if turbulent schmidt relation should be used
+    simpleControl simple(mesh);
 
 //treat relationship to R as a turbulent diffusivity
 
     volSymmTensorField Dt = ((k/(Sct*epsilon)))*R;
 
-//correct negative values in Dt to positive
-/*forAll(Dt, cellI){
 
-	Dt[cellI].xx() = ( Dt[cellI].xx() < 0 ) ? -Dt[cellI].xx() : Dt[cellI].xx() ;
-	Dt[cellI].xy() = ( Dt[cellI].xy() < 0 ) ? -Dt[cellI].xy() : Dt[cellI].xy() ;
-	Dt[cellI].xz() = ( Dt[cellI].xz() < 0 ) ? -Dt[cellI].xz() : Dt[cellI].xz() ;
-	Dt[cellI].yy() = ( Dt[cellI].yy() < 0 ) ? -Dt[cellI].yy() : Dt[cellI].yy() ;
-	Dt[cellI].yz() = ( Dt[cellI].yz() < 0 ) ? -Dt[cellI].yz() : Dt[cellI].yz() ;
-	Dt[cellI].zz() = ( Dt[cellI].zz() < 0 ) ? -Dt[cellI].zz() : Dt[cellI].zz() ;
-
-}
-*/
-
-    //volVectorField gradC = fvc::grad(C);
-
-    //Dt.write();//must write the Dturbulent field if changed by ScNo.H
-    phi.write();//write the phi field in initial directory
-
+    Dt.write();//must write the Dturbulent field if changed by ScNo.H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating scalar transport\n" << endl;
-
-    for (runTime++; !runTime.end(); runTime++)
+    while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-#       include "readSIMPLEControls.H"
-#       include "initConvergenceCheck.H"
 
-        for (int nonOrth=0; nonOrth<=nNonOrthCorr; nonOrth++)
-        {
-
-	fvScalarMatrix CEqn
+	tmp<fvScalarMatrix> CEqn
 	(
            fvm::div(phi, C)
 	 + fvm::SuSp(-fvc::div(phi), C)//added for boundedness from post (http://www.cfd-online.com/Forums/openfoam/64602-origin-fvm-sp-fvc-div-phi_-epsilon_-kepsilon-eqn.html)
@@ -96,25 +69,20 @@ int main(int argc, char *argv[])
          - fvc::laplacian(Dt, C)//treat Reynolds stress portion as explicit
 	);
 
-	CEqn.relax();
+	CEqn().relax();
 	
-	eqnResidual = solve(CEqn).initialResidual();
-        maxResidual = max(eqnResidual, maxResidual);
-
-        }
+	solve(CEqn());
 
         runTime.write();
+
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
             << nl << endl;
-
-#       include "convergenceCheck.H"
-
     }
 
     Info<< "End\n" << endl;
 
-    return(0);
+    return 0;
 }
 
 

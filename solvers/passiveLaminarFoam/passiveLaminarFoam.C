@@ -23,14 +23,15 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Application
-    scalarTransportFoam
+    passiveLaminarFoam
 
 Description
-    Solves a transport equation for a passive scalar
+    Solves a transport equation for a passive scalar in a laminar flow
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
+#include "simpleControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -43,46 +44,36 @@ int main(int argc, char *argv[])
 #   include "createMesh.H"
 #   include "createFields.H"
 
-#   include "readSIMPLEControls.H"//added--reads in tSchmidt to see if turbulent schmidt relation should be used
-
+    simpleControl simple(mesh);
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nCalculating scalar transport\n" << endl;
+    Info<< "\nCalculating passive scalar transport for a laminar flow\n" << endl;
 
-    for (runTime++; !runTime.end(); runTime++)
+    while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-#       include "readSIMPLEControls.H"
-
-        for (int nonOrth=0; nonOrth<=nNonOrthCorr; nonOrth++)
-        {
-
-	fvScalarMatrix CEqn
+	tmp<fvScalarMatrix> CEqn
 	(
 	   fvm::div(phi, C)
 	 + fvm::SuSp(-fvc::div(phi), C)//added for boundedness from post (http://www.cfd-online.com/Forums/openfoam/64602-origin-fvm-sp-fvc-div-phi_-epsilon_-kepsilon-eqn.html)
 	 - fvm::laplacian(D, C)
 
 	);
-
 	
-	solve(CEqn);
-
-        }
+	solve(CEqn());
 
         runTime.write();
+
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
             << nl << endl;
-
-
     }
 
     Info<< "End\n" << endl;
 
-    return(0);
+    return 0;
 }
 
 
