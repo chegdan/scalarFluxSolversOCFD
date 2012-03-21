@@ -2,7 +2,7 @@
 
 cd solvers/passiveGDHFoam
 	wclean
-cd ../passiveLaunderSFTFoam
+cd ../passiveGDHExpFoam
 	wclean
 cd ../passiveFoxASMFoam
 	wclean
@@ -10,13 +10,8 @@ cd ../passiveLaminarFoam
 	wclean
 cd ../passiveTransGDHFoam
 	wclean
+cd ../passiveTransGDHExpFoam
+	wclean
 cd ../passiveTransLaminarFoam
 	wclean
-cd ../expEulerGDHFoam
-	wclean
-cd ../expEulerFoam
-	wclean
-cd ../RK4ScalarFoam
-	wclean
-cd ../RK4GDHFoam
-	wclean
+
