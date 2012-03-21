@@ -85,6 +85,25 @@
     );
 
 
+Info<< "Reading the turbulent diffusivity"<<endl;
+    volSymmTensorField Dt
+    (
+        IOobject
+        (
+            "Dt",
+            runTime.timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+	dimensionedSymmTensor( "Dt",dimensionSet(0,2,-1,0,0,0,0), symmTensor::zero), 
+	"zeroGradient"
+    );
+
+    Dt = ((k/(Sct*epsilon)))*R;
+
+
     Info<< "Reading field U\n" << endl;
 
     volVectorField U

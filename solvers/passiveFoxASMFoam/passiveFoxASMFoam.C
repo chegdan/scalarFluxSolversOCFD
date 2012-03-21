@@ -26,7 +26,7 @@ Application
     scalarTransportFoam
 
 Description
-    Solves a transport equation for a passive scalar
+    Solves a transport equation for a passive scalar in a turbulent field
 
 \*---------------------------------------------------------------------------*/
 
@@ -47,11 +47,6 @@ int main(int argc, char *argv[])
 
     simpleControl simple(mesh);
 
-//treat relationship to R as a turbulent diffusivity
-
-    volSymmTensorField Dt = ((k/(Sct*epsilon)))*R;
-
-
     Dt.write();//must write the Dturbulent field if changed by ScNo.H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -66,7 +61,7 @@ int main(int argc, char *argv[])
            fvm::div(phi, C)
 	 + fvm::SuSp(-fvc::div(phi), C)//added for boundedness from post (http://www.cfd-online.com/Forums/openfoam/64602-origin-fvm-sp-fvc-div-phi_-epsilon_-kepsilon-eqn.html)
 	 - fvm::laplacian(D, C)
-         - fvc::laplacian(Dt, C)//treat Reynolds stress portion as explicit
+         - fvm::laplacian(Dt, C)
 	);
 
 	CEqn().relax();

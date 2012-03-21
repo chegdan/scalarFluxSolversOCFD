@@ -49,7 +49,7 @@ relaxationFactors
     }
     equations
     {
-        C               0.9;
+        C               0.01;
     }
 }
 
