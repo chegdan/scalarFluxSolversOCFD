@@ -1,3 +1,0 @@
-RK4ScalarFoam.C
-
-EXE = $(FOAM_USER_APPBIN)/RK4ScalarFoam

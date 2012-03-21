@@ -1,3 +1,0 @@
-expEulerFoam.C
-
-EXE = $(FOAM_USER_APPBIN)/expEulerFoam
