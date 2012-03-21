@@ -1,0 +1,22 @@
+#!/bin/bash
+
+cd solvers/passiveGDHFoam
+	wmake
+cd ../passiveLaunderSFTFoam
+	wmake
+cd ../passiveFoxASMFoam
+	wmake
+cd ../passiveLaminarFoam
+	wmake
+cd ../passiveTransGDHFoam
+	wmake
+cd ../passiveTransLaminarFoam
+	wmake
+cd ../expEulerGDHFoam
+	wmake
+cd ../expEulerFoam
+	wmake
+cd ../RK4ScalarFoam
+	wmake
+cd ../RK4GDHFoam
+	wmake

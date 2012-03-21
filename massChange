@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#git rm -rf    cases/passiveFoxASMFoam/pitzDaily/0/((k|(Sct*epsilon))*R)
+git add   cases/passiveFoxASMFoam/pitzDaily/0/C
+git add   cases/passiveFoxASMFoam/pitzDaily/constant/transportProperties
+git add   cases/passiveFoxASMFoam/pitzDaily/system/controlDict
+git add   cases/passiveFoxASMFoam/pitzDaily/system/fvSchemes
+git add   cases/passiveFoxASMFoam/pitzDaily/system/fvSolution
+git add   cases/passiveGDHFoam/pitzDaily/0/Dt
+git add   cases/passiveGDHFoam/pitzDaily/constant/transportProperties
+git rm -rf    cases/passiveGDHFoam/pitzDaily/system/PODsolverDict
+git add   cases/passiveGDHFoam/pitzDaily/system/controlDict
+git add   cases/passiveGDHFoam/pitzDaily/system/fvSchemes
+git add   cases/passiveGDHFoam/pitzDaily/system/fvSolution
+git add   solvers/passiveFoxASMFoam/passiveFoxASMFoam.C
+git rm -rf    solvers/passiveGDHFoam/ScNo.H
+git add   solvers/passiveGDHFoam/passiveGDHFoam.C
+git rm -rf    solvers/passiveGDHFoam/readSIMPLEControls.H
+git rm -rf    solvers/passiveGDHFoam/showCoNum.H
+git add   solvers/passiveLaunderSFTFoam/createFields.H
+git add   solvers/passiveLaunderSFTFoam/passiveLaunderSFTFoam.C
+git rm -rf    solvers/passiveLaunderSFTFoam/readSIMPLEControls.H
