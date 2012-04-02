@@ -62,7 +62,7 @@
         IOobject
         (
             "nut",
-            runTime.timeName(),
+            runTime.timeName() + "../0",
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
@@ -77,7 +77,7 @@
         IOobject
         (
             "U",
-            runTime.timeName(),
+            runTime.timeName() + "../0",
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE

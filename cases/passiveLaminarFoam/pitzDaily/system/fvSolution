@@ -39,6 +39,7 @@ SIMPLE
     {
         C               1e-6;
     }
+}
 
 
 relaxationFactors

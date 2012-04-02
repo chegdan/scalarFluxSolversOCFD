@@ -26,7 +26,7 @@ Global
     createPhi
 
 Description
-    Creates and reads the existing relative face-flux field phi.
+    Reads the existing relative face-flux field phi.
 
 \*---------------------------------------------------------------------------*/
 
@@ -35,7 +35,7 @@ Description
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-Info<< "Reading/calculating face flux field phi\n" << endl;
+Info<< "Reading face flux field phi\n" << endl;
 
 surfaceScalarField phi
 (
@@ -44,7 +44,7 @@ surfaceScalarField phi
         "phi",
         runTime.timeName(),
         mesh,
-        IOobject::READ_IF_PRESENT,
+        IOobject::MUST_READ,
         IOobject::NO_WRITE
     ),
     mesh//linearInterpolate(U) & mesh.Sf()
