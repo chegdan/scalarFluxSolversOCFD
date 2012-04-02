@@ -42,7 +42,7 @@ surfaceScalarField phi
     IOobject
     (
         "phi",
-        runTime.timeName()+"../0",
+        runTime.timeName(),
         mesh,
         IOobject::MUST_READ,
         IOobject::NO_WRITE
